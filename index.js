@@ -1,25 +1,38 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const RPSCommand = require("./src/games/rockpaperscissors/RPSCommand.js");
+const ClearChatCmd = require("./src/commands/ClearChatCmd.js");
 require("dotenv").config();
-require("./src/commands/CommandManager.ts");
-
-const RPS = require("./src/games/RPSGame.ts");
 
 /**
  * Commands and fun parties.
  */
-Command: commands = [
-    new RPS()
+commands = [
+    new RPSCommand(),
+    new ClearChatCmd()
 ];
 
 client.on('ready', () => {
     console.log(`Bot has started with id: ${client.user.tag}`);
 });
 
-client.on('message', message => {
-    for (n in commands) {
-        commands[n].runCommand(message);
-    }
+client.on('message', async message => {
+    if (message === '' || message === 'undefined') return;
+    commands.forEach(command => {
+        if (command.isAllowed(message.member, message.author.bot)) {
+            var args = command.isCommand(message.content.trim().split(/ +/)[0]);
+            if (args != null) {
+                command.runCommand(message, args);
+                return;
+            } else {
+                console.log("Command not found for '" + message.content + "'.");
+            }
+        } else {
+            if (!message.author.bot) {
+                message.reply("Insufficient Permission!");
+            }
+        }
+    });
 });
 
 /**
