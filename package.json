@@ -1,5 +1,21 @@
 {
+  "name": "skybot",
+  "version": "1.0",
+  "description": "Simple Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start-dev": "nodemon index.js"
+  },
+  "author": "SkyVox",
+  "license": "ISC",
+  "bugs": {
+    "url": "http://www.skydhs.com"
+  },
+
   "dependencies": {
-    "discord.js": "^12.5.3"
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "tsc": "^2.0.3"
   }
 }
