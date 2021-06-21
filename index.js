@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const RPSCommand = require("./src/games/rockpaperscissors/RPSCommand.js");
+const RPSCommand = require("./src/games/rockpaperscissors/RPSCmd.js");
 const ClearChatCmd = require("./src/commands/ClearChatCmd.js");
 require("dotenv").config();
 

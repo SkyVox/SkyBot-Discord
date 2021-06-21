@@ -1,6 +1,8 @@
 const defaultPrefix = '/';
+const DM = 'dm';
 
 module.exports = {
+    dm: DM,
     defaultPrefix: defaultPrefix,
     Command: class Command {
 
