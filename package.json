@@ -5,14 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start-dev": "nodemon index.js"
+    "start-dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "Discord"
+  ],
   "author": "SkyVox",
   "license": "ISC",
   "bugs": {
-    "url": "http://www.skydhs.com"
+    "url": "https://www.skydhs.com"
   },
-
   "dependencies": {
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",

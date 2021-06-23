@@ -17,10 +17,10 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-    if (message === '' || message === 'undefined') return;
+    if (message == null || message.content === 'undefined') return;
     commands.forEach(command => {
         if (command.isAllowed(message.member, message.author.bot)) {
-            var args = command.isCommand(message.content.trim().split(/ +/)[0]);
+            let args = command.isCommand(message.content.trim().split(/ +/)[0]);
             if (args != null) {
                 command.runCommand(message, args);
                 return;

@@ -17,7 +17,7 @@ module.exports = {
             if (!prefix.startsWith(defaultPrefix)) return null;
 
             prefix = prefix.slice(defaultPrefix.length);
-            if (this.prefix.toLowerCase() != prefix.toLowerCase()) {
+            if (this.prefix.toLowerCase() !== prefix.toLowerCase()) {
                 if (this.aliases == null || this.aliases.length === 0) return false;
                 for (let i in this.aliases) {
                     let str = this.aliases[i];
