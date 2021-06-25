@@ -12,7 +12,7 @@ module.exports = class ClearChatCmd extends Command {
         super([category.CLEAR, null, null, false]);
     }
 
-    async runCommand(message, args) {
+    async onCommand(message, args) {
         let deleteAmount = 100;
 
         if (args !== '') {

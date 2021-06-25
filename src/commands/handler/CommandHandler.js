@@ -11,7 +11,7 @@ commands = [
     new ClearChatCmd()
 ];
 
-module.exports = async function executeCommand(message) {
+async function handleCommand(message) {
     if (message == null || message.content === 'undefined') return;
     let content = message.content;
     if (!content.startsWith(prefix)) return;
@@ -49,10 +49,26 @@ module.exports = async function executeCommand(message) {
             continue;
         }
 
-        command.runCommand(message, args.join(' '));
+        await command.onCommand(message, args.join(' '));
+    }
+}
+
+async function handleReaction(reaction, user) {
+    if (user.bot) return;
+
+    for (let i in commands) {
+        if (!commands.hasOwnProperty(i)) continue;
+        let command = commands[i];
+        if (!command.useReaction) continue;
+        await command.onReactionAdd(reaction, user);
     }
 }
 
 function sendMessage(message, text, bot) {
     if (!bot) message.reply(text);
+}
+
+module.exports = {
+    handleCommand: handleCommand,
+    handleReaction: handleReaction
 }

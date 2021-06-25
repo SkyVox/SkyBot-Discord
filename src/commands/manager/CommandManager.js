@@ -10,6 +10,7 @@ class Command {
      * optional[1]{String} = The SubCommand.
      * optional[2]{String[]} = Command permissions if has|null otherwise.
      * optional[3]{boolean} = If bot can or not execute this command.
+     * optional[4]{boolean} = If this command uses or not reaction.
      *
      * @param {object[]} optional
      */
@@ -18,6 +19,7 @@ class Command {
         this.command = optional[1];
         this.permissions = optional[2];
         this.bot = optional[3];
+        this.useReaction = optional.length >= 3 ? optional[4] : false;
     }
 
     /**
@@ -48,12 +50,26 @@ class Command {
     }
 
     /**
-     * Executes this command.
+     * Triggered when user executes a
+     * command which the given @category
+     * and @command are equals to this.
      *
      * @param {Message} message
      * @param {String} args
      */
-    async runCommand(message, args) {}
+    async onCommand(message, args) {}
+
+    /**
+     * Triggered whether this command uses
+     * reactions.
+     *
+     * @param {MessageReaction} reaction
+     * @param {User} user
+     * @returns {Promise<void>}
+     */
+    async onReactionAdd(reaction, user) {}
+
+    // async onReactRemove() {}
 }
 
 module.exports = {
