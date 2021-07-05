@@ -1,7 +1,7 @@
 const RPSCommand = require("../../games/rockpaperscissors/RPSCmd");
 const ClearChatCmd = require("../ClearChatCmd");
 
-let prefix = '/';
+let prefix = '!'; // To make mentions easier let's use "!".
 
 /**
  * Commands and fun parties.
