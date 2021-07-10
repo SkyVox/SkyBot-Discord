@@ -117,7 +117,9 @@ class RPSCommand extends Command {
                     playMap.delete(authorId);
                 });
         } else {
-            // So, this user wants to play against SkyBot. LET'S THIS USER TRY AHAHAH.
+            let bot = await message.client.users.fetch(process.env.BOT_ID);
+            let play = new Play([ message.author, bot ]);
+            startGame(play, message.channel);
         }
     }
 }
@@ -149,6 +151,12 @@ async function startGame(play, channel) {
         let user = play.users[i];
         let error = false;
 
+        if (user.bot) {
+            const reactions = [ rock, paper, scissor ];
+            play.twoReaction = reactions[Math.floor(Math.random() * reactions.length)];
+            continue;
+        }
+
         let message = await user.send(messages[i].map(str => str.replace("%%user%%", oneName).replace("%%second-user%%", twoName)))
             .catch(msg => {
                 msg.send("User <@" + user.id + "> has DM closed!");
@@ -164,10 +172,10 @@ async function startGame(play, channel) {
 
                     switch (i) {
                         case 0:
-                            play.oneReaction = reaction;
+                            play.oneReaction = reaction.emoji.name;
                             break;
                         case 1:
-                            play.twoReaction = reaction;
+                            play.twoReaction = reaction.emoji.name;
                             break;
                     }
 
@@ -200,8 +208,8 @@ function drawWinner(play, channel) {
 
     channel.send([
         "Rock-Paper-Scissors battle against '" + one + "' and '" + two + "' has end!",
-        one + " picked " + play.oneReaction.emoji.name,
-        two + " picked " + play.twoReaction.emoji.name,
+        one + " picked " + play.oneReaction,
+        two + " picked " + play.twoReaction,
         "```",
         winner === "TIE" ? "Both choose the same shape, it was a " + winner + "." : winner + " has won this battle.",
         "```"
@@ -214,12 +222,12 @@ function drawWinner(play, channel) {
 }
 
 function getWinner(play) {
-    if (play.oneReaction.emoji.name === play.twoReaction.emoji.name) return "TIE";
+    if (play.oneReaction === play.twoReaction) return "TIE";
 
     let winner;
     let emoji = null;
 
-    switch (play.oneReaction.emoji.name) {
+    switch (play.oneReaction) {
         case rock:
             emoji = scissor;
             break;
@@ -231,7 +239,7 @@ function getWinner(play) {
             break;
     }
 
-    winner = play.twoReaction.emoji.name === emoji ? play.users[0].username : play.users[1].username;
+    winner = play.twoReaction === emoji ? play.users[0].username : play.users[1].username;
     return winner;
 }
 
