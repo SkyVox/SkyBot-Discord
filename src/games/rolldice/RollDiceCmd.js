@@ -9,7 +9,7 @@ let emojiNumbers = [
     "5️⃣",
     "6️⃣"
 ];
-let expirationTime = 25;
+let expirationTime = 60 * 1000;
 let rollMessage = null;
 
 class RollDiceCommand extends Command {
