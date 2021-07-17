@@ -1,4 +1,5 @@
 const RPSCommand = require("../../games/rockpaperscissors/RPSCmd");
+const RollDiceCommand = require("../../games/rolldice/RollDiceCmd")
 const ClearChatCmd = require("../ClearChatCmd");
 
 let prefix = '!'; // To make mentions easier let's use "!".
@@ -8,49 +9,42 @@ let prefix = '!'; // To make mentions easier let's use "!".
  */
 commands = [
     new RPSCommand(),
+    new RollDiceCommand(),
     new ClearChatCmd()
 ];
 
 async function handleCommand(message) {
     if (message == null || message.content === 'undefined') return;
+
     let content = message.content;
     if (!content.startsWith(prefix)) return;
 
     let args = content.slice(prefix.length).trim().split(' ');
     let cmd = args.shift().trim().toLowerCase();
+    let subCommand = args.length > 0 ? args.shift().trim().toLowerCase() : null;
 
     for (let i in commands) {
         if (!commands.hasOwnProperty(i)) continue;
         let command = commands[i];
-        let bot = message.author.bot;
 
         if (!command.isCommand(cmd)) continue;
         if (command.hasSubCommand()) {
-            let subCommand = command.hasSubCommand() && args.length > 0 ? args.shift().trim().toLowerCase() : null;
-
-            /**
-             * TODO: If 'subCommand is null' or 'command#command is not equals subCommand' ->
-             *  Build an embed with some command that could help this user.
-             */
-            if (subCommand == null) {
-                message.reply("Missing arguments: '" + command.command + "'!");
-                continue;
-            } else if (command.command !== subCommand) {
-                message.reply([
-                    "The given argument is not valid!",
-                    "You mean: '" + command.command + "'?"
-                ]);
+            if ((subCommand == null) || (command.command !== subCommand)) {
                 continue;
             }
         }
 
-        if (!command.isAllowed(message.member, bot)) {
-            sendMessage(message, "You don't have enough permission to execute that command!", bot);
+        if (!command.isAllowed(message.member, message.author.bot)) {
+            sendMessage(message, "You don't have enough permission to execute that command!", message.author.bot);
             continue;
         }
 
         await command.onCommand(message, args.join(' '));
+        return;
     }
+
+    // We could not find the command that this user submitted.
+    message.channel.send("Could not find this command. Use `!help` to check all available commands!");
 }
 
 async function handleReaction(reaction, user) {

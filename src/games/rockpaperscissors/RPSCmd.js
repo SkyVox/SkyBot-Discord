@@ -1,4 +1,4 @@
-const { Command, dmChannel } = require("../../commands/manager/CommandManager.js");
+const { Command } = require("../../commands/manager/CommandManager.js");
 const category = require("../../commands/manager/CommandCategory");
 
 let rock = '🤜';
@@ -52,7 +52,7 @@ class RPSCommand extends Command {
 
     constructor() {
         // Command: /play rps <user?bot>
-        super([category.GAME, "rps", null, false, true]);
+        super([category.GAME, "rps", null, false, false]);
     }
 
     async onCommand(message, args) {
